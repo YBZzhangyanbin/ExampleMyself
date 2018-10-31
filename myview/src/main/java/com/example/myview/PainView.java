@@ -34,6 +34,7 @@ public class PainView extends View {
         super.onDraw(canvas);
         paint = new Paint();
         paint.setColor(Color.RED);
+
         for (int i = 0; i < 5; i++) {
             canvas.drawRect(100 + 70 * i, 100, 150 + 70 * i, 200 + 40 * i, paint);
 
