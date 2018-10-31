@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#f00"
+        android:text="77777777"/>
+
+    <TextView
+        android:id="@+id/tv_quick_sort"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="快速排序"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:background="@mipmap/ic_launcher"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_quick_sort2"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:text="排序前"
+        android:background="#00f"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="288dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_quick_sort3"
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+
+        android:text="结果"
+        tools:ignore="MissingConstraints" />
+
+</RelativeLayout>
