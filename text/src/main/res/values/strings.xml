@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">text</string>
+    <string name="requestSucess">请求数据成功</string>
+    <string name="requestFaile">请求数据失败</string>
 </resources>
