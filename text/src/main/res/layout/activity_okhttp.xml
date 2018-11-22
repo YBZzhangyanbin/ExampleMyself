@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tvGetRequest"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="#55fff000"
+        android:gravity="center"
+        android:text="GET请求"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/tvPostRequest"
+
+        />
+
+    <TextView
+        android:id="@+id/tvPostRequest"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="#55fff000"
+        android:gravity="center"
+        android:text="POST请求"
+
+        app:layout_constraintLeft_toRightOf="@+id/tvGetRequest"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/tvFile"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="#55fff000"
+        android:gravity="center"
+        android:text="文件提交"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/tvMulit"
+        app:layout_constraintTop_toBottomOf="@+id/tvPostRequest" />
+
+    <TextView
+        android:id="@+id/tvMulit"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="#55fff000"
+        android:gravity="center"
+        android:text="文件参数混合提交"
+        app:layout_constraintLeft_toRightOf="@+id/tvFile"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPostRequest" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvGetRequest" />
+
+</android.support.constraint.ConstraintLayout>
