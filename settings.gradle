@@ -1,1 +1,1 @@
-include ':constraintlayout', ':myview', ':text'
+include ':constraintlayout', ':myview', ':text', ':antmoneyanimation'
