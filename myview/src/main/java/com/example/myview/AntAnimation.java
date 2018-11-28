@@ -1,5 +1,6 @@
 package com.example.myview;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,6 +14,7 @@ import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 
 public class AntAnimation extends View {
 
@@ -32,6 +34,8 @@ public class AntAnimation extends View {
     private Paint textMinPaint;
     private Bitmap bitmap;
     private Paint circlePaint;
+    private float angle;
+    private float text;
 
     public AntAnimation(Context context) {
         this(context, null);
@@ -85,8 +89,6 @@ public class AntAnimation extends View {
         textMinPaint.setStrokeWidth(1);
         textMinPaint.setColor(Color.WHITE);
         textMinPaint.setAlpha(130);
-
-
     }
 
     @Override
@@ -104,7 +106,7 @@ public class AntAnimation extends View {
         canvas.drawArc(30, 30, 530, 530, 165, 210, false, bigPaint);  //宽度是8px
         canvas.drawArc(70, 70, 490, 490, 165, 210, false, midPaint); //
         textPaint.setTextSize(150);
-        canvas.drawText("500", 280, 280 + 30, textPaint);
+        canvas.drawText((int) text + "", 280, 280 + 30, textPaint);
         textPaint.setColor(Color.GREEN);
         canvas.drawPoint(280, 350, textPaint);
         canvas.save();
@@ -153,7 +155,7 @@ public class AntAnimation extends View {
 
 
         Path path = new Path();
-        path.addArc(30, 30, 530, 530, 165, 100);
+        path.addArc(30, 30, 530, 530, 165, angle);
         PathMeasure measure = new PathMeasure(path, false);
         measure.getPosTan(measure.getLength() * 2f, pos, tan);
 //        matrix.postTranslate(pos[0] - bitmap.getWidth() / 2, pos[1] - bitmap.getHeight() / 2);
@@ -161,11 +163,38 @@ public class AntAnimation extends View {
         circlePaint.setStrokeWidth(16);
         circlePaint.setStrokeCap(Paint.Cap.ROUND);
         canvas.save();
-        canvas.rotate(3, 280, 280);
+        if (angle > 190) {
+            canvas.rotate(210 - angle, 280, 280);
+        } else if (angle > 20) {
+            canvas.rotate(20, 280, 280);
+        } else {
+            canvas.rotate(angle, 280, 280);
+        }
+
         canvas.drawPoint(pos[0], pos[1], circlePaint);
         circlePaint.setStrokeWidth(8);
         canvas.restore();
 
+
+    }
+
+    public void startAnimation(int total) {
+        total = total > 950 ? 950 : total;
+        total = total < 350 ? 350 : total;
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(350, total);
+        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        valueAnimator.setDuration(3000);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                angle = ((float) animation.getAnimatedValue() - 350) / 600 * 210;
+                text = (float) animation.getAnimatedValue();
+
+                postInvalidate();
+
+            }
+        });
+        valueAnimator.start();
 
     }
 }
