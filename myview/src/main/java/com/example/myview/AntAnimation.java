@@ -3,14 +3,12 @@ package com.example.myview;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
-import android.graphics.Point;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -22,6 +20,8 @@ public class AntAnimation extends View {
     private Paint midPaint;
     private Paint textPaint;
     private Paint textCreditPaint;
+
+    public int defalutSize = 500;
 
     String[] sesameStr = new String[]{
             "350", "较差",
@@ -41,11 +41,11 @@ public class AntAnimation extends View {
         this(context, null);
     }
 
-    public AntAnimation(Context context, @Nullable AttributeSet attrs) {
+    public AntAnimation(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public AntAnimation(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public AntAnimation(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
@@ -94,7 +94,31 @@ public class AntAnimation extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        setMeasuredDimension(getSize(widthMeasureSpec), getSize(heightMeasureSpec));
     }
+
+    private int getSize(int Space) {
+        int result = 0;
+        int spaceMode = MeasureSpec.getMode(Space);
+        int spaceSize = MeasureSpec.getSize(Space);
+        switch (spaceMode) {
+            case MeasureSpec.EXACTLY:
+                result = spaceSize;
+                break;
+            case MeasureSpec.AT_MOST:
+                result = Math.min(defalutSize, spaceSize);
+                break;
+
+            case MeasureSpec.UNSPECIFIED:
+                result = defalutSize;
+                break;
+        }
+
+
+        return result;
+    }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -196,5 +220,10 @@ public class AntAnimation extends View {
         });
         valueAnimator.start();
 
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
     }
 }
