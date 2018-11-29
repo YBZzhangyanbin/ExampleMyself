@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
         beserView.startAnimation();
 
 
-//        RL_containt.addView(antAnimation);
         tv_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -2,10 +2,14 @@ package com.example.myview;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Xfermode;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -25,6 +29,11 @@ public class BeserView extends View {
     private int width;
     private float offet;
     private int i;
+    private int height;
+    private Paint paint2;
+    private PorterDuffXfermode mMode;
+    private Bitmap mBitmap;
+    private Canvas mCanvas;
 
     public BeserView(Context context) {
         this(context, null);
@@ -44,16 +53,20 @@ public class BeserView extends View {
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         width = wm.getDefaultDisplay().getWidth();
-        int height = wm.getDefaultDisplay().getHeight();
+        height = wm.getDefaultDisplay().getHeight();
 
 
+        paint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint2.setStrokeWidth(5);
+        paint2.setColor(Color.RED);
+//        mMode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStrokeWidth(5);
-        paint.setColor(Color.GRAY);
-        paint.setStyle(Paint.Style.STROKE);
-
-
+        paint.setColor(Color.parseColor("#88dddddd"));
         path = new Path();
+        mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        mCanvas = new Canvas(mBitmap);
+        mMode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
 
 
     }
@@ -62,29 +75,37 @@ public class BeserView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        i++;
+        //清除掉图像 不然path会重叠
+        mBitmap.eraseColor(Color.parseColor("#00000000"));
+//        canvas.drawCircle(500, 500, 250, paint2);
         path.reset();
-        path.moveTo(-width+offet, 100+i/10);
-
-        path.quadTo(-3 * width / 4 + offet, 200+i/10, -width / 2 + offet, 100+i/10);
-        path.quadTo(-width / 4 + offet, 0+i/10, 0 + offet, 100+i/10);
-        path.quadTo(width / 4 + offet, 200+i/10, width / 2 + offet, 100+i/10);
-        path.quadTo(3 * width / 4 + offet, i/10, width + offet, 100+i/10);
-        Log.i("zhangyb", "onDraw: " + i++);
-        canvas.drawPath(path, paint);
+        path.moveTo(-width + offet, width / 2 - i / 10);
+        path.quadTo(-3 * width / 4 + offet, width / 2 + 100 - i / 10, -width / 2 + offet, width / 2 - i / 10);
+        path.quadTo(-width / 4 + offet, width / 2 - 100 - i / 10, 0 + offet, width / 2 - i / 10);
+        path.quadTo(width / 4 + offet, width / 2 + 100 - i / 10, width / 2 + offet, width / 2 - i / 10);
+        path.quadTo(3 * width / 4 + offet, width / 2 - 100 - i / 10, width + offet, width / 2 - i / 10);
+        path.lineTo(width, height);
+        path.lineTo(0, height);
+        path.close();
+        mCanvas.drawCircle(width / 2, width / 2, width / 2, paint2);
+        paint.setXfermode(mMode);
+        //src
+        mCanvas.drawPath(path, paint);
+        paint.setXfermode(null);
+        canvas.drawBitmap(mBitmap, 0, 0, null);
     }
 
     public void startAnimation() {
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, width);
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.setDuration(6000);
+        valueAnimator.setDuration(3000);
         valueAnimator.setInterpolator(new LinearInterpolator());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 offet = (float) animation.getAnimatedValue();
-
                 postInvalidate();
-
             }
         });
         valueAnimator.setRepeatCount(ValueAnimator.INFINITE);
