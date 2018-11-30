@@ -34,6 +34,11 @@ public class BeserView extends View {
     private PorterDuffXfermode mMode;
     private Bitmap mBitmap;
     private Canvas mCanvas;
+    private int defaulte = 600;
+    private int padb;
+    private int padt;
+    private int padL;
+    private int padR;
 
     public BeserView(Context context) {
         this(context, null);
@@ -49,13 +54,8 @@ public class BeserView extends View {
         init();
     }
 
+
     private void init() {
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
-        width = wm.getDefaultDisplay().getWidth();
-        height = wm.getDefaultDisplay().getHeight();
-
-
         paint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint2.setStrokeWidth(5);
         paint2.setColor(Color.RED);
@@ -64,11 +64,6 @@ public class BeserView extends View {
         paint.setStrokeWidth(5);
         paint.setColor(Color.parseColor("#88dddddd"));
         path = new Path();
-        mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(mBitmap);
-        mMode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
-
-
     }
 
 
@@ -88,7 +83,7 @@ public class BeserView extends View {
         path.lineTo(width, height);
         path.lineTo(0, height);
         path.close();
-        mCanvas.drawCircle(width / 2, width / 2, width / 2, paint2);
+        mCanvas.drawCircle(width / 2, width / 2, width / 2 - padt, paint2);
         paint.setXfermode(mMode);
         //src
         mCanvas.drawPath(path, paint);
@@ -116,7 +111,35 @@ public class BeserView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        padb = getPaddingBottom();
+        padt = getPaddingTop();
+        padL = getPaddingLeft();
+        padR = getPaddingRight();
+        width = w;
+        height = h;
+        mBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        mCanvas = new Canvas(mBitmap);
+        mMode = new PorterDuffXfermode(PorterDuff.Mode.SRC_IN);
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(getValue(widthMeasureSpec), getValue(heightMeasureSpec));
+    }
 
+    private int getValue(int widthMeasureSpec) {
+        int spaceMode = MeasureSpec.getMode(widthMeasureSpec);
+        int spaceValue = MeasureSpec.getSize(widthMeasureSpec);
+        switch (spaceMode) {
+            case MeasureSpec.EXACTLY:
+                return spaceValue;
+            case MeasureSpec.AT_MOST:
+                return Math.min(defaulte, spaceValue);
+            case MeasureSpec.UNSPECIFIED:
+                return defaulte;
+
+        }
+        return defaulte;
+    }
 }

@@ -15,17 +15,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         RelativeLayout RL_containt = findViewById(R.id.RL_containt);
         final EditText et_text = findViewById(R.id.et_text);
+        final BeserView chartViewbeser = findViewById(R.id.beser);
         final TextView tv_click = findViewById(R.id.tv_click);
-//        final AntAnimation antAnimation = new AntAnimation(this);
-        BeserView beserView = new BeserView(this);
-        RL_containt.addView(beserView);
-        beserView.startAnimation();
+        final ChartView chartView = new ChartView(this);
+        RL_containt.addView(chartView);
+
+        chartView.statrtAnimation();
 
 
-        tv_click.setOnClickListener(new View.OnClickListener() {
+        chartView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                antAnimation.startAnimation(Integer.parseInt(et_text.getText().toString()));
+                chartView.statrtAnimation();
             }
         });
 
